@@ -24,9 +24,8 @@ public class Wget implements Runnable {
                 long start = System.nanoTime();
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 long finish = System.nanoTime();
-                System.out.println(finish-start);
-                int delayTime = (finish-start)/1000
-                Thread.sleep(1000);
+                long delayTime = speed - (finish - start) / 1000;
+                Thread.sleep(delayTime);
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
