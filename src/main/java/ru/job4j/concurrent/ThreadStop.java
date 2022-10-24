@@ -16,7 +16,6 @@ public class ThreadStop {
     }
 }
 */
-
 public class ThreadStop {
     public static void main(String[] args) throws InterruptedException {
         Thread progress = new Thread(
