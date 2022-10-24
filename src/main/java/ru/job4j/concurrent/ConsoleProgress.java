@@ -3,9 +3,9 @@ package ru.job4j.concurrent;
 public class ConsoleProgress implements Runnable {
     public static void main(String[] args) throws InterruptedException {
         Thread progress = new Thread(new ConsoleProgress());
-            progress.start();
-            Thread.sleep(10000);
-            progress.interrupt();
+        progress.start();
+        Thread.sleep(10000);
+        progress.interrupt();
     }
 
     @Override
@@ -18,11 +18,11 @@ public class ConsoleProgress implements Runnable {
                 if (i == process.length) {
                     i = 0;
                 }
-                System.out.println("Loading ... " + process[i]);
+                System.out.print("\r Loading ... " + process[i]);
                 i++;
             }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 }
