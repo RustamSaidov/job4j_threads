@@ -46,7 +46,7 @@ public class Wget implements Runnable {
 
     public static void main(String[] args) throws InterruptedException {
         /*Входящие данные:
-        -urlOfInputFile=https://proof.ovh.net/files/10Mb.dat -speed=512000 -addressOfOutputFile=10Mb_tmp.dat
+        "-urlOfInputFile=https://proof.ovh.net/files/10Mb.dat" -speed=512000 -addressOfOutputFile=10Mb_tmp.dat
         Запланированное время работы =20с
         */
         long start = System.nanoTime();
