@@ -28,14 +28,14 @@ public class Wget implements Runnable {
                 if (downloadData == 0) {
                     start = System.nanoTime();
                 }
-                downloadData=downloadData+bytesRead;
+                downloadData = downloadData + bytesRead;
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 long finish = System.nanoTime();
                 if (downloadData >= speed && finish - start < 1000000000) {
-                        long diff = 1000000000 - (finish - start);
-                        long delayTime = diff / 1000000;
-                        Thread.sleep(delayTime);
-                        downloadData = 0;
+                    long diff = 1000000000 - (finish - start);
+                    long delayTime = diff / 1000000;
+                    Thread.sleep(delayTime);
+                    downloadData = 0;
                 }
             }
         } catch (IOException | InterruptedException e) {
@@ -55,6 +55,6 @@ public class Wget implements Runnable {
         wget.start();
         wget.join();
         long finish = System.nanoTime();
-        System.out.println(finish-start);
+        System.out.println(finish - start);
     }
 }
