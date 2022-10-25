@@ -9,6 +9,7 @@ public class Wget implements Runnable {
     private final String urlOfInputFile;
     private final String addressOfOutputFile;
     private final int speed;
+    public static final int ONE_SECOND_IN_MILLISEC = 1000;
 
     public Wget(String urlOfInputFile, String urlOfOutputFile, int speed) {
         this.urlOfInputFile = urlOfInputFile;
@@ -23,19 +24,18 @@ public class Wget implements Runnable {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             int downloadData = 0;
-            long start = System.nanoTime();
+            long start = System.currentTimeMillis();
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                if (downloadData == 0) {
-                    start = System.nanoTime();
-                }
                 downloadData = downloadData + bytesRead;
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
-                long finish = System.nanoTime();
-                if (downloadData >= speed && finish - start < 1000000000) {
-                    long diff = 1000000000 - (finish - start);
-                    long delayTime = diff / 1000000;
-                    Thread.sleep(delayTime);
+                long finish = System.currentTimeMillis();
+                if (downloadData >= speed) {
                     downloadData = 0;
+                    if (finish - start < ONE_SECOND_IN_MILLISEC) {
+                        long delayTime = ONE_SECOND_IN_MILLISEC - (finish - start);
+                        Thread.sleep(delayTime);
+                    }
+                    start = System.currentTimeMillis();
                 }
             }
         } catch (IOException | InterruptedException e) {
@@ -49,12 +49,14 @@ public class Wget implements Runnable {
         "-urlOfInputFile=https://proof.ovh.net/files/10Mb.dat" -speed=512000 -addressOfOutputFile=10Mb_tmp.dat
         Запланированное время работы =20с
         */
-        long start = System.nanoTime();
+
+        ArgsName.checkArrayOnEmptiness(args);
+        long start = System.currentTimeMillis();
         ArgsName jvm = ArgsName.of(new String[]{args[0], args[1], args[2]});
         Thread wget = new Thread(new Wget(jvm.get("urlOfInputFile"), jvm.get("addressOfOutputFile"), Integer.parseInt(jvm.get("speed"))));
         wget.start();
         wget.join();
-        long finish = System.nanoTime();
+        long finish = System.currentTimeMillis();
         System.out.println(finish - start);
     }
 }

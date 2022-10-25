@@ -41,12 +41,16 @@ public class ArgsName {
     }
 
     public static ArgsName of(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("The passed array of parameters is empty");
-        }
+        checkArrayOnEmptiness(args);
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;
+    }
+
+    public static void checkArrayOnEmptiness(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("The passed array of parameters is empty");
+        }
     }
 
     public Map<String, String> getValues() {
