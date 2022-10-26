@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class GetContentWithoutUnicodeStrategy implements GetContentStrategy{
+public class GetContentWithoutUnicodeStrategy implements GetContentStrategy {
     @Override
     public String getContent(File file) {
         String output = "";
