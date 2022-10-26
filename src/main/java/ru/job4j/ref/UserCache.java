@@ -21,9 +21,6 @@ public class UserCache {
     }
 
     public List<User> findAll() {
-        List<User> copyList = new ArrayList<>();
-        List<User> valuesFromMap = (List<User>) users.values();
-        valuesFromMap.stream().map(u -> copyList.add(User.of(u.getName())));
-        return copyList;
+        return users.values().stream().map(u -> User.of(u.getName())).toList();
     }
 }
