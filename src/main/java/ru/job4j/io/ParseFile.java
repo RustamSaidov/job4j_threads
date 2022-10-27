@@ -1,18 +1,28 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.util.function.Predicate;
 
 public final class ParseFile {
     private final File file;
-    private final GetContentStrategy getContentStrategy;
 
-    public ParseFile(File file, GetContentStrategy getContentStrategy) {
+    public ParseFile(File file) {
         this.file = file;
-        this.getContentStrategy = getContentStrategy;
     }
 
-    public String getContent() {
-        return getContentStrategy.getContent(file);
+    public synchronized String getContent(Predicate<Character> filter) {
+
+        StringBuilder output = new StringBuilder();
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            int data;
+            while ((data = in.read()) != -1) {
+                if (filter.test((char) data)) {
+                    output.append((char) data);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return output.toString();
     }
 }
-
