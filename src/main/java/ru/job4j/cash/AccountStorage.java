@@ -25,8 +25,8 @@ public class AccountStorage {
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean result = false;
-        Optional<Account> fromAcc = Optional.ofNullable(accounts.get(fromId));
-        Optional<Account> toAcc = Optional.ofNullable(accounts.get(toId));
+        Optional<Account> fromAcc = getById(fromId);
+        Optional<Account> toAcc = getById(toId);
         if (fromAcc.isPresent() && toAcc.isPresent()) {
             int fromAmount = fromAcc.get().amount();
             int toAmount = toAcc.get().amount();
