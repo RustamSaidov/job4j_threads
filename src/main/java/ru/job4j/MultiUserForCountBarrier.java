@@ -1,6 +1,6 @@
 package ru.job4j;
 
-public class MultiUserForCoiuntBarrier {
+public class MultiUserForCountBarrier {
     public static void main(String[] args) {
         CountBarrier countBarrier = new CountBarrier(5);
 
