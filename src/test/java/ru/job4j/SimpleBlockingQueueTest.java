@@ -5,7 +5,7 @@ import org.junit.Test;
 public class SimpleBlockingQueueTest {
 
     @Test
-    public void add(){
-        
+    public void add() {
+
     }
 }
