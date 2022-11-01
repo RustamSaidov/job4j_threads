@@ -13,6 +13,7 @@ public class SimpleBlockingQueue<T> {
     int totalCount = 0;
     int count = 0;
 
+
     @GuardedBy("this")
     private final Queue<T> queue = new LinkedList<>();
 
