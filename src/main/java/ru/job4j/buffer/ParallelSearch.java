@@ -9,9 +9,7 @@ public class ParallelSearch {
         final int maxIndex = 3;
         final Thread consumer = new Thread(
                 () -> {
-                    while (!queue.getQueue().isEmpty() ||
-                            !Thread.currentThread().isInterrupted()
-                    ) {
+                    while (!queue.getQueue().isEmpty() || !Thread.currentThread().isInterrupted()) {
                         try {
                             System.out.println(queue.poll());
                         } catch (InterruptedException e) {
