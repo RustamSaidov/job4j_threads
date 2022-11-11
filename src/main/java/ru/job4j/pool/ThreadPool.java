@@ -10,39 +10,40 @@ public class ThreadPool {
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>(size * 10);
 
-    public ThreadPool() {
+    public ThreadPool() throws InterruptedException {
         for (int i = 0; i < size; i++) {
             Thread thread = new Thread();
+            thread.start();
             threads.add(thread);
-
+            System.out.println(12345);
         }
-    }
-
-    public void threadsBeginsToWork() {
+        System.out.println(111);
         threads.forEach(t -> {
-            while (!tasks.getQueue().isEmpty()) {
-                if (t.getState() == Thread.State.WAITING) {
-                    t.notify();
+            while (!Thread.currentThread().isInterrupted()) {
+                System.out.println(999);
+                while(!tasks.getQueue().isEmpty()){
+                    tasks.getQueue().poll().run();
                 }
-                Runnable task = tasks.getQueue().poll();
-                t = new Thread(task);
-                t.start();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            try {
-                t.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            System.out.println(222);
+//            while (!tasks.getQueue().isEmpty() || !Thread.currentThread().isInterrupted()) {
+//                if (t.getState() == Thread.State.WAITING) {
+//                    t.notify();
+//                }
+//                Runnable task = tasks.getQueue().poll();
+//                t = new Thread(task);
+//                t.start();
+//            }
         });
-    }
+}
 
     public void work(Runnable job) throws InterruptedException {
         tasks.offer(job);
-        threads.forEach(t -> {
-            if (t.getState() == Thread.State.WAITING) {
-                t.notify();
-            }
-        });
     }
 
     public void shutdown() {
@@ -52,37 +53,44 @@ public class ThreadPool {
     public static void main(String[] args) throws InterruptedException {
         final int[] i = {0};
         ThreadPool threadPool = new ThreadPool();
+        System.out.println("!");
         Runnable job1 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
+            Thread.currentThread().interrupt();
         };
         Runnable job2 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
+            Thread.currentThread().interrupt();
         };
         Runnable job3 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
+            Thread.currentThread().interrupt();
         };
         Runnable job4 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
+            Thread.currentThread().interrupt();
         };
         Runnable job5 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
+            Thread.currentThread().interrupt();
         };
         Runnable job6 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
+            Thread.currentThread().interrupt();
         };
         threadPool.work(job1);
+        System.out.println("!");
         threadPool.work(job2);
         threadPool.work(job3);
         threadPool.work(job4);
         threadPool.work(job5);
         threadPool.work(job6);
-        threadPool.threadsBeginsToWork();
         System.out.println("!!@#$$$$$$%");
         threadPool.shutdown();
         System.out.println("!!@#$$$$$$%");
