@@ -1,4 +1,4 @@
-package ru.job4j.pool;
+/*package ru.job4j.pool;
 
 import ru.job4j.SimpleBlockingQueue;
 
@@ -12,17 +12,21 @@ public class ThreadPool {
 
     public ThreadPool() throws InterruptedException {
         for (int i = 0; i < size; i++) {
-            Thread thread = new Thread();
+            Thread thread = new Thread(
+                    () -> {
+                        while (!Thread.currentThread().isInterrupted()) {
+                            try {
+                                tasks.poll().run();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+            );
             thread.start();
             threads.add(thread);
         }
-        threads.forEach(t -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                while (!tasks.getQueue().isEmpty()) {
-                    tasks.getQueue().poll().run();
-                }
-            }
-        });
     }
 
     public void work(Runnable job) throws InterruptedException {
@@ -30,7 +34,7 @@ public class ThreadPool {
     }
 
     public void shutdown() {
-        threads.forEach(t -> t.interrupt());
+        threads.forEach(Thread::interrupt);
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -39,32 +43,26 @@ public class ThreadPool {
         Runnable job1 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
-            Thread.currentThread().interrupt();
         };
         Runnable job2 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
-            Thread.currentThread().interrupt();
         };
         Runnable job3 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
-            Thread.currentThread().interrupt();
         };
         Runnable job4 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
-            Thread.currentThread().interrupt();
         };
         Runnable job5 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
-            Thread.currentThread().interrupt();
         };
         Runnable job6 = () -> {
             System.out.println(i[0]);
             i[0] = i[0] + 1;
-            Thread.currentThread().interrupt();
         };
         threadPool.work(job1);
         threadPool.work(job2);
@@ -82,3 +80,4 @@ public class ThreadPool {
         });
     }
 }
+*/
