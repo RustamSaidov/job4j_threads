@@ -40,30 +40,13 @@ public class ThreadPool {
     public static void main(String[] args) throws InterruptedException {
         AtomicInteger j = new AtomicInteger();
         ThreadPool threadPool = new ThreadPool();
-        Runnable job1 = () -> {
-            System.out.println("This is thread with the name " + Thread.currentThread().getName() + " and it outputs value " + j.getAndIncrement());
-        };
-        Runnable job2 = () -> {
-            System.out.println("This is thread with the name " + Thread.currentThread().getName() + " and it outputs value " + j.getAndIncrement());
-        };
-        Runnable job3 = () -> {
-            System.out.println("This is thread with the name " + Thread.currentThread().getName() + " and it outputs value " + j.getAndIncrement());
-        };
-        Runnable job4 = () -> {
-            System.out.println("This is thread with the name " + Thread.currentThread().getName() + " and it outputs value " + j.getAndIncrement());
-        };
-        Runnable job5 = () -> {
-            System.out.println("This is thread with the name " + Thread.currentThread().getName() + " and it outputs value " + j.getAndIncrement());
-        };
-        Runnable job6 = () -> {
-            System.out.println("This is thread with the name " + Thread.currentThread().getName() + " and it outputs value " + j.getAndIncrement());
-        };
-        threadPool.work(job1);
-        threadPool.work(job2);
-        threadPool.work(job3);
-        threadPool.work(job4);
-        threadPool.work(job5);
-        threadPool.work(job6);
+
+        for (int i = 0; i < threadPool.size; i++) {
+            Runnable job = () -> {
+                System.out.println("This is thread with the name " + Thread.currentThread().getName() + " and it outputs value " + j.getAndIncrement());
+            };
+            threadPool.work(job);
+        }
         threadPool.shutdown();
     }
 }
