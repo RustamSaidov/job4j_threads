@@ -1,4 +1,4 @@
-package ru.job4j.pools;
+/*package ru.job4j.pools;
 
 import java.sql.Array;
 import java.util.Arrays;
@@ -84,3 +84,4 @@ public class ParallelObjectSearch extends RecursiveTask<ObjForSearch[]> {
 
     }
 }
+*/

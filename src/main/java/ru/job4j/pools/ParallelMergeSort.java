@@ -1,4 +1,4 @@
-package ru.job4j.pools;
+/*package ru.job4j.pools;
 
 import java.util.Arrays;
 import java.util.concurrent.ForkJoinPool;
@@ -19,7 +19,7 @@ public class ParallelMergeSort extends RecursiveTask<int[]> {
     @Override
     protected int[] compute() {
         if (from == to) {
-            return new int[] {array[from]};
+            return new int[]{array[from]};
         }
         int mid = (from + to) / 2;
         // создаем задачи для сортировки частей
@@ -41,9 +41,11 @@ public class ParallelMergeSort extends RecursiveTask<int[]> {
 //    }
 
     public static void main(String[] args) {
-        int[] array = new int[] {2,5,3,1,9,6,8,7,4,0};
-        ParallelMergeSort parallelMergeSort = new ParallelMergeSort(array,0, array.length - 1);
+        int[] array = new int[]{2, 5, 3, 1, 9, 6, 8, 7, 4, 0};
+        ParallelMergeSort parallelMergeSort = new ParallelMergeSort(array, 0, array.length - 1);
         System.out.println(Arrays.toString(parallelMergeSort.compute()));
 
     }
 }
+
+ */
