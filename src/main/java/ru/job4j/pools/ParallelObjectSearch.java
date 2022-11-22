@@ -1,12 +1,9 @@
-/* package ru.job4j.pools;
+/*package ru.job4j.pools;
 
-import java.sql.Array;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.concurrent.ForkJoinPool;
+import java.util.OptionalInt;
 import java.util.concurrent.RecursiveTask;
 
-public class ParallelObjectSearch extends RecursiveTask<ObjForSearch[]> {
+public class ParallelObjectSearch extends RecursiveTask<OptionalInt> {
     private final ObjForSearch[] array;
     private final int from;
     private final int to;
@@ -20,11 +17,12 @@ public class ParallelObjectSearch extends RecursiveTask<ObjForSearch[]> {
     }
 
     @Override
-    protected Optional compute() {
-        if (array.length<=10) {
-            for (int i = 0; i < array.length; i++) {
+    protected OptionalInt compute() {
+        OptionalInt result = OptionalInt.empty();
+        if (to-from<=10) {
+            for (int i = from; i < to; i++) {
                 if(obj.equals(array[i])){
-                    return Optional.of(i);
+                    return OptionalInt.of(i);
                 }
             }
         }
@@ -35,10 +33,14 @@ public class ParallelObjectSearch extends RecursiveTask<ObjForSearch[]> {
 
         leftSort.fork();
         rightSort.fork();
-
-        ObjForSearch[] left = leftSort.join();
-        ObjForSearch[] right = rightSort.join();
-        return MergeSort.merge(left, right);
+        OptionalInt left = leftSort.join();
+        OptionalInt right = rightSort.join();
+        if(left.isPresent()){
+           result = left;
+        }else {
+            result = right;
+        }
+        return result;
     }
 
 
@@ -60,9 +62,9 @@ public class ParallelObjectSearch extends RecursiveTask<ObjForSearch[]> {
                 new ObjForSearch("Phoma")
         };
         ParallelObjectSearch parallelObjectSearch = new ParallelObjectSearch(array,0, array.length - 1, obj1);
-        System.out.println(Arrays.toString(parallelObjectSearch.compute()));
-
+        System.out.println(parallelObjectSearch.invoke().getAsInt());
     }
 }
+
 
  */

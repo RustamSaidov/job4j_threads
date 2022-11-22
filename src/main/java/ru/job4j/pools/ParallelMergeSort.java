@@ -44,6 +44,5 @@ public class ParallelMergeSort extends RecursiveTask<int[]> {
         int[] array = new int[]{2, 5, 3, 1, 9, 6, 8, 7, 4, 0};
         ParallelMergeSort parallelMergeSort = new ParallelMergeSort(array, 0, array.length - 1);
         System.out.println(Arrays.toString(parallelMergeSort.compute()));
-
     }
 }
