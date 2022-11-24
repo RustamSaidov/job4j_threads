@@ -1,15 +1,15 @@
-/*package ru.job4j.pools;
+package ru.job4j.pools;
 
 import java.util.OptionalInt;
 import java.util.concurrent.RecursiveTask;
 
-public class ParallelObjectSearch extends RecursiveTask<OptionalInt> {
-    private final ObjForSearch[] array;
+public class ParallelObjectSearch <E> extends RecursiveTask<Integer> {
+    private final E[] array;
     private final int from;
     private final int to;
-    private final ObjForSearch obj;
+    private final E obj;
 
-    public ParallelObjectSearch(ObjForSearch[] array, int from, int to, ObjForSearch obj) {
+    private ParallelObjectSearch(E[] array, int from, int to, E obj) {
         this.array = array;
         this.from = from;
         this.to = to;
@@ -17,14 +17,22 @@ public class ParallelObjectSearch extends RecursiveTask<OptionalInt> {
     }
 
     @Override
-    protected OptionalInt compute() {
+    protected Integer compute() {
+        if(!obj.getClass().isInstance(array.getClass().arrayType())){
+            try {
+                throw new Exception("Неверный класс объекта поиска");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         OptionalInt result = OptionalInt.empty();
         if (to-from<=10) {
             for (int i = from; i < to; i++) {
                 if(obj.equals(array[i])){
-                    return OptionalInt.of(i);
+                    return i;
                 }
             }
+            return -1;
         }
         int mid = (from + to) / 2;
 
@@ -33,38 +41,12 @@ public class ParallelObjectSearch extends RecursiveTask<OptionalInt> {
 
         leftSort.fork();
         rightSort.fork();
-        OptionalInt left = leftSort.join();
-        OptionalInt right = rightSort.join();
-        if(left.isPresent()){
-           result = left;
-        }else {
-            result = right;
-        }
-        return result;
+        Integer left = (Integer) leftSort.join();
+        Integer right = (Integer) rightSort.join();
+        return Math.max(left, right);
     }
 
-
-    public static void main(String[] args) {
-        ObjForSearch obj1 = new ObjForSearch("Tom");
-        ObjForSearch[] array = new ObjForSearch[]{
-                new ObjForSearch("Bill"),
-                new ObjForSearch("Tim"),
-                new ObjForSearch("Dough"),
-                new ObjForSearch("Sam"),
-                new ObjForSearch("George"),
-                obj1,
-                new ObjForSearch("Will"),
-                new ObjForSearch("Stanley"),
-                new ObjForSearch("Grag"),
-                new ObjForSearch("Ivan"),
-                new ObjForSearch("Igor"),
-                new ObjForSearch("Oleg"),
-                new ObjForSearch("Phoma")
-        };
-        ParallelObjectSearch parallelObjectSearch = new ParallelObjectSearch(array,0, array.length - 1, obj1);
-        System.out.println(parallelObjectSearch.invoke().getAsInt());
+    public static ParallelObjectSearch getArrayAndObjForSearch(ObjForSearch[] array, Object obj){
+        return new ParallelObjectSearch(array,0, array.length - 1, obj);
     }
 }
-
-
- */
