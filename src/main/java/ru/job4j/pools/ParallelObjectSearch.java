@@ -1,9 +1,9 @@
 package ru.job4j.pools;
 
-import java.util.OptionalInt;
+import java.util.Arrays;
 import java.util.concurrent.RecursiveTask;
 
-public class ParallelObjectSearch <E> extends RecursiveTask<Integer> {
+public class ParallelObjectSearch<E> extends RecursiveTask<Integer> {
     private final E[] array;
     private final int from;
     private final int to;
@@ -18,17 +18,15 @@ public class ParallelObjectSearch <E> extends RecursiveTask<Integer> {
 
     @Override
     protected Integer compute() {
-        if(!obj.getClass().isInstance(array.getClass().arrayType())){
-            try {
-                throw new Exception("Неверный класс объекта поиска");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (array.length == 0) {
+            throw new IllegalArgumentException("Names array is empty");
         }
-        OptionalInt result = OptionalInt.empty();
-        if (to-from<=10) {
+        if (Arrays.stream(array).findFirst().get().getClass() != obj.getClass()) {
+            throw new IllegalArgumentException("Different class types");
+        }
+        if (to - from <= 10) {
             for (int i = from; i < to; i++) {
-                if(obj.equals(array[i])){
+                if (obj.equals(array[i])) {
                     return i;
                 }
             }
@@ -46,7 +44,7 @@ public class ParallelObjectSearch <E> extends RecursiveTask<Integer> {
         return Math.max(left, right);
     }
 
-    public static ParallelObjectSearch getArrayAndObjForSearch(ObjForSearch[] array, Object obj){
-        return new ParallelObjectSearch(array,0, array.length - 1, obj);
+    public static ParallelObjectSearch getArrayAndObjForSearch(Object[] array, Object obj) {
+        return new ParallelObjectSearch(array, 0, array.length - 1, obj);
     }
 }

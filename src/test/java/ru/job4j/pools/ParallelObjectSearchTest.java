@@ -1,8 +1,7 @@
 package ru.job4j.pools;
 
-import org.junit.Assert;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParallelObjectSearchTest {
@@ -26,7 +25,7 @@ class ParallelObjectSearchTest {
                 new ObjForSearch("Phoma")
         };
         ParallelObjectSearch parallelObjectSearch = ParallelObjectSearch.getArrayAndObjForSearch(array, obj1);
-        assertEquals(parallelObjectSearch.invoke(),4);
+        assertEquals(parallelObjectSearch.invoke(), 4);
     }
 
     @Test
@@ -40,7 +39,7 @@ class ParallelObjectSearchTest {
                 new ObjForSearch("Will")
         };
         ParallelObjectSearch parallelObjectSearch = ParallelObjectSearch.getArrayAndObjForSearch(array, obj1);
-        assertEquals(parallelObjectSearch.invoke(),2);
+        assertEquals(parallelObjectSearch.invoke(), 2);
     }
 
     @Test
@@ -61,7 +60,17 @@ class ParallelObjectSearchTest {
                 new ObjForSearch("Phoma")
         };
         ParallelObjectSearch parallelObjectSearch = ParallelObjectSearch.getArrayAndObjForSearch(array, obj1);
-        assertEquals(parallelObjectSearch.invoke(),-1);
+        assertEquals(parallelObjectSearch.invoke(), -1);
+    }
+
+    @Test
+    void whenArrayIsEmpty() {
+        ObjForSearch obj1 = new ObjForSearch("Tom");
+        ObjForSearch[] array = new ObjForSearch[0];
+        ParallelObjectSearch parallelObjectSearch = ParallelObjectSearch.getArrayAndObjForSearch(array, obj1);
+        assertThatThrownBy(() -> parallelObjectSearch.invoke())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("array is empty");
     }
 
     @Test
@@ -71,19 +80,11 @@ class ParallelObjectSearchTest {
                 new ObjForSearch("Bill"),
                 new ObjForSearch("Tim"),
                 new ObjForSearch("Dough"),
-                new ObjForSearch("Sam"),
-                new ObjForSearch("George"),
-                new ObjForSearch("Will"),
-                new ObjForSearch("Stanley"),
-                new ObjForSearch("Grag"),
-                new ObjForSearch("Ivan"),
-                new ObjForSearch("Igor"),
-                new ObjForSearch("Oleg"),
-                new ObjForSearch("Phoma")
         };
         ParallelObjectSearch parallelObjectSearch = ParallelObjectSearch.getArrayAndObjForSearch(array, obj1);
-        Assert.
-        assertEquals(parallelObjectSearch.invoke(),-1);
+        assertThatThrownBy(() -> parallelObjectSearch.invoke())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Different class types");
     }
 }
 
