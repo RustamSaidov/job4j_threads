@@ -1,6 +1,7 @@
 package ru.job4j.pools;
 
 import java.util.Arrays;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 public class ParallelObjectSearch<E> extends RecursiveTask<Integer> {
@@ -18,12 +19,6 @@ public class ParallelObjectSearch<E> extends RecursiveTask<Integer> {
 
     @Override
     protected Integer compute() {
-        if (array.length == 0) {
-            throw new IllegalArgumentException("Names array is empty");
-        }
-        if (Arrays.stream(array).findFirst().get().getClass() != obj.getClass()) {
-            throw new IllegalArgumentException("Different class types");
-        }
         if (to - from <= 10) {
             for (int i = from; i < to; i++) {
                 if (obj.equals(array[i])) {
@@ -44,7 +39,8 @@ public class ParallelObjectSearch<E> extends RecursiveTask<Integer> {
         return Math.max(left, right);
     }
 
-    public static ParallelObjectSearch getArrayAndObjForSearch(Object[] array, Object obj) {
-        return new ParallelObjectSearch(array, 0, array.length - 1, obj);
+    public static Integer getArrayAndObjForSearch(Object[] array, Object obj) {
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+        return (Integer) forkJoinPool.invoke(new ParallelObjectSearch(array, 0, array.length - 1, obj));
     }
 }
