@@ -15,12 +15,12 @@ class RolColSumTest {
                 {4, 5, 6},
                 {7, 8, 9},
         };
-        RolColSum.Sums[] testArray = {
-                new RolColSum.Sums(6, 12),
-                new RolColSum.Sums(15, 15),
-                new RolColSum.Sums(24, 18),
+        Sums[] testArray = {
+                new Sums(6, 12),
+                new Sums(15, 15),
+                new Sums(24, 18),
         };
-        RolColSum.Sums[] resultArray = RolColSum.sum(array);
+        Sums[] resultArray = RolColSum.sum(array);
         assertArrayEquals(testArray, resultArray);
     }
 
@@ -31,12 +31,12 @@ class RolColSumTest {
                 {4, 5, 6},
                 {7, 8, 9},
         };
-        RolColSum.Sums[] testArray = {
-                new RolColSum.Sums(6, 12),
-                new RolColSum.Sums(15, 15),
-                new RolColSum.Sums(24, 18),
+        Sums[] testArray = {
+                new Sums(6, 12),
+                new Sums(15, 15),
+                new Sums(24, 18),
         };
-        RolColSum.Sums[] resultArray = RolColSum.asyncSum(array);
+        Sums[] resultArray = RolColSum.asyncSum(array);
         assertArrayEquals(testArray, resultArray);
     }
 }
