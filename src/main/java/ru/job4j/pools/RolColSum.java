@@ -9,11 +9,14 @@ public class RolColSum {
         Sums[] resultArray = new Sums[matrix.length];
 
         for (int i = 0; i < matrix.length; i++) {
-            resultArray[i] = new Sums(0, 0);
+            int rowSum = 0;
+            int colSum = 0;
             for (int j = 0; j < matrix[0].length; j++) {
-                resultArray[i].setRowSum(resultArray[i].getRowSum() + matrix[i][j]);
-                resultArray[i].setColSum(resultArray[i].getColSum() + matrix[j][i]);
+                rowSum += matrix[i][j];
+                colSum += matrix[j][i];
             }
+            resultArray[i] = new Sums(rowSum, colSum);
+
         }
         return resultArray;
     }
@@ -22,19 +25,21 @@ public class RolColSum {
         Sums[] resultArray = new Sums[matrix.length];
 
         for (int i = 0; i < matrix.length; i++) {
-            resultArray[i] = calcRowSumAndColSum(new Sums(0, 0), matrix, i).get();
+            resultArray[i] = calcRowSumAndColSum(matrix, i).get();
         }
         return resultArray;
     }
 
-    public static CompletableFuture<Sums> calcRowSumAndColSum(Sums sum, int[][] matrix, int i) {
+    public static CompletableFuture<Sums> calcRowSumAndColSum(int[][] matrix, int i) {
         return CompletableFuture.supplyAsync(
                 () -> {
+                    int rowSum = 0;
+                    int colSum = 0;
                     for (int j = 0; j < matrix[0].length; j++) {
-                        sum.setRowSum(sum.getRowSum() + matrix[i][j]);
-                        sum.setColSum(sum.getColSum() + matrix[j][i]);
+                        rowSum += matrix[i][j];
+                        colSum += matrix[j][i];
                     }
-                    return sum;
+                    return new Sums(rowSum, colSum);
                 }
         );
     }
